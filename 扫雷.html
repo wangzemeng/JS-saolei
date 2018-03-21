@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+    body {
+        text-align: center;
+    }
+    .wrapper {
+        margin: 0 auto;
+        width: 600px;
+        height: 568px;
+        background: rgb(93, 183, 191);
+        border: 1px solid #000;
+    }
+    .wrapper .title {
+        height: 100px;
+    }
+    .wrapper .title ul {
+        height: 100%;
+        width: 100%;
+        border-bottom: 1px solid #000;
+    }
+    .wrapper .title ul li {
+        float: left;
+        width: 100px;
+        height: 80px;
+        margin-right: 10px;
+        font-size: 20px;
+        line-height: 80px;
+        border: 10px solid rgb(95,195,220);
+        border-style: outset;
+        cursor: pointer;
+    }
+    .wrapper .title ul span {
+        float: left;
+        display: block;
+        font-size: 30px;
+    }
+    .main {
+        width: 600px;
+        height: 468px;
+    }
+    .main .left {
+        width: 66px;
+        height: 100%;
+        float: left;
+    }
+    .main .content {
+        padding-top: 1px;
+        width: 468px;
+        height: 100%;
+        float: left;
+    }
+    .main .right {
+        width:66px;
+        height: 100%;
+        float: left;
+    }
+</style>
+<body>
+
+    <div class="wrapper">
+        <div class="title">
+            <ul id="oUl">
+                <li style=>简单</li>
+                <li style=>中等</li>
+                <li style=>困难</li>
+                <li style=>开始</li>
+                <span>Time</span>
+            </ul>
+            
+        </div>
+        <div class="main">
+            <div id="left" class="left">
+
+            </div>
+            <div class="content" id="content">
+
+            </div>
+            <div class="right">
+
+            </div>
+        </div>
+    </div>
+    <script>
+        var oLi = document.getElementsByTagName('li');
+        for (var i = 0;i < oLi.length;i++) {
+            (function (index) {
+                oLi[i].onmousedown = function () {
+                    oLi[index].style.borderStyle = 'inset';
+                }
+                oLi[i].onmouseup = function () {
+                    oLi[index].style.borderStyle = 'outset';
+                }
+                oLi[i].onmouseleave = oLi[i].onmouseup;
+            })(i)
+        }
+        var nanduNum = 10;
+        var shengliNum = 0;
+        var qiziNum = nanduNum;
+        var dileiArr = [];
+        var leftSpan = document.createElement('span');
+        leftSpan.innerHTML = '您的旗子还有<br><span id="qizi">'+qiziNum+'</span><br>个';
+        leftSpan.style = 'display:block;width:100%;height:100%;font-size:40px;text-align:center;'
+        left.appendChild(leftSpan);
+        oLi[0].onclick = function () {
+            qiziNum = nanduNum = 10;
+            qizi.innerHTML = nanduNum;
+        }
+        oLi[1].onclick = function () {
+            qiziNum = nanduNum = 15;
+            qizi.innerHTML = nanduNum;
+        }
+        oLi[2].onclick = function () {
+            qiziNum = nanduNum = 20;
+            qizi.innerHTML = nanduNum;
+        }
+        var timeSpan = document.createElement('span');
+        timeSpan.style = "";
+        timeSpan.style = "display:block;float:left;border: 1px solid #fff;height:40px;width:67px;background:#eee;fontColor:#fff;";
+        oUl.appendChild(timeSpan)
+        var timeStr = "1";
+        var timer = null;
+        var flag = 1;
+        oLi[3].onclick = function () {
+            if (flag) {
+                flag = 0;
+                var mainDivStr = "height:50px;width:50px;border:1px solid #000;background:#999;float:left;";
+                for (var i = 0;i < 81;i++) {//DIV创建
+                    var mainDiv = document.createElement('div');
+                    mainDiv.id = 'oDiv';
+                    mainDiv.style = mainDivStr;
+                    content.appendChild(mainDiv);
+                }
+                
+                for (var i = 0;i<oDiv.length;i++){//右键的绑定
+                    oDiv[i].qiziFlag = 0;
+                    (function(index){
+                        oDiv[i].oncontextmenu = function () {
+                            if (oDiv[index].qiziFlag==0) {
+                                if (qiziNum!=0) {
+                                    this.style = mainDivStr +'background:url(http://pic61.nipic.com/file/20150311/20317067_174854681581_2.jpg) no-repeat;background-size:100%';
+                                    if (this.shuxing == 'dilei') {
+                                        this.shengli = 1;
+                                    }
+                                    this.onclick = function () {
+                                        if (this.qiziFlag==0){
+                                            if (this.shuxing == 0) {
+                                                tuozhan(index)
+                                            }
+                                            else if (this.shuxing  == 'dilei') {
+                                                alert('Boom!!游戏结束,刷新页面重新开始游戏。');
+                                                this.style = mainDivStr + 'background:url(http://pic01.taopic.com/150225/318765-15022504511152-lp.jpg) ;background-size:cover';
+                                                this.oncontextmenu = function(){
+                                                }
+                                            }else {
+                                                this.style.backgroundColor = '#eee';
+                                                this.innerText = this.shuxing;
+                                                this.oncontextmenu = function(){
+                                                }
+                                            }
+                                        }
+                                    };
+                                    oDiv[index].qiziFlag = 1;
+                                    qiziNum--; 
+                                    qizi.innerHTML = qiziNum;
+                                }
+                                if (qiziNum==0) {//判断胜利
+                                    shengliNum = 0;
+                                    for(var i = 0; i < dileiArr.length; i++) {
+                                        oDiv[dileiArr[i]].shengli==1?shengliNum++:0;
+                                    }
+                                    shengliNum==nanduNum? alert('游戏胜利!!您的成绩为' + timeStr):0;
+                                }
+                            }else{
+                                if (this.shuxing == 'dilei') {
+                                    this.shengli = 0;
+                                }
+                                this.style = mainDivStr;
+                                oDiv[index].qiziFlag = 0;
+                                qiziNum++;
+                                qizi.innerHTML = qiziNum;
+                            }
+                        }
+                    })(i)
+                }
+                for (var i = 0;i < nanduNum;i++){//随机产生雷
+                    var dileishu = Math.ceil(Math.random()*80);
+                    if (dileiArr.indexOf(dileishu) > 0) {
+                        while (dileiArr.indexOf(dileishu) > 0) {
+                            dileishu = Math.ceil(Math.random()*80);
+                        }  
+                    }
+                    dileiArr.push(dileishu);
+                }
+                for (var i = 0;i < dileiArr.length;i++) {//游戏失败
+                    oDiv[dileiArr[i]].shuxing = 'dilei';
+                    (function(index){
+                        oDiv[dileiArr[i]].onclick = function () {
+                            oDiv[dileiArr[index]].style = mainDivStr + 'background:url(http://pic01.taopic.com/150225/318765-15022504511152-lp.jpg) ;background-size:cover'
+                            alert('Boom!!游戏结束');
+                        }
+                    })(i)
+                }
+                (function () {
+                    for(var i = 0;i < oDiv.length;i++) {
+                        if (dileiArr.indexOf(i) == -1) {
+                            var zhouweiDilei = 0;
+                            if (i%9==0  ){
+                                dileiArr.indexOf(i-8) == -1 ?zhouweiDilei:zhouweiDilei++;
+                                dileiArr.indexOf(i-9) == -1 ?zhouweiDilei:zhouweiDilei++;
+                                dileiArr.indexOf(i+1) == -1 ?zhouweiDilei:zhouweiDilei++;
+                                dileiArr.indexOf(i+9) == -1 ?zhouweiDilei:zhouweiDilei++;
+                                dileiArr.indexOf(i+10) == -1 ?zhouweiDilei:zhouweiDilei++;
+                            }else if (i%9==8){
+                                dileiArr.indexOf(i+8) == -1 ?zhouweiDilei:zhouweiDilei++;
+                                dileiArr.indexOf(i-9) == -1 ?zhouweiDilei:zhouweiDilei++;
+                                dileiArr.indexOf(i-1) == -1 ?zhouweiDilei:zhouweiDilei++;
+                                dileiArr.indexOf(i+9) == -1 ?zhouweiDilei:zhouweiDilei++;
+                                dileiArr.indexOf(i-10) == -1 ?zhouweiDilei:zhouweiDilei++;
+                            }else {
+                                dileiArr.indexOf(i-8) == -1 ?zhouweiDilei:zhouweiDilei++;
+                                dileiArr.indexOf(i+8) == -1 ?zhouweiDilei:zhouweiDilei++;
+                                dileiArr.indexOf(i-9) == -1 ?zhouweiDilei:zhouweiDilei++;
+                                dileiArr.indexOf(i+9) == -1 ?zhouweiDilei:zhouweiDilei++;
+                                dileiArr.indexOf(i-10) == -1 ?zhouweiDilei:zhouweiDilei++;
+                                dileiArr.indexOf(i+10) == -1 ?zhouweiDilei:zhouweiDilei++;
+                                dileiArr.indexOf(i+1) == -1 ?zhouweiDilei:zhouweiDilei++;
+                                dileiArr.indexOf(i-1) == -1 ?zhouweiDilei:zhouweiDilei++;
+                            }
+                            oDiv[i].shuxing = zhouweiDilei;
+                        }
+                    }
+                })()
+                for (var i = 0;i < oDiv.length;i++) {//左键绑定
+                    if(oDiv[i].shuxing == 0) {
+                        (function (index) {
+                            // 0左键
+                            oDiv[i].onclick = function() {
+                                if (this.qiziFlag==0){
+                                    oDiv[index].oncontextmenu = null;
+                                    tuozhan(index);
+                                }
+                            }
+                        })(i)
+                    }else if (!isNaN(oDiv[i].shuxing)){
+                        (function (index) {
+                            oDiv[i].onclick = function () {
+                                if (this.qiziFlag==0){
+                                oDiv[index].innerText = oDiv[index].shuxing;
+                                oDiv[index].style.backgroundColor = '#eee';
+                                oDiv[index].oncontextmenu = null;
+                                }
+                            }
+                        })(i)
+                    }
+                    
+                }
+                function tuozhan (i) {
+                    var zeroArr = [];
+                    bianse(i)
+                    findleft(i,zeroArr);
+                    findright(i,zeroArr);
+                    findtop(i,zeroArr);
+                    finddown(i,zeroArr);
+                    for (var j = 0; j < zeroArr.length; j++) {
+                        for (var index = 0;index < zeroArr.length;index++) {
+                            bianse(zeroArr[index]);
+                        }
+                    }
+                }
+                function findleft (i,arr) {
+                    if (oDiv[i-1]!==undefined&&oDiv[i-1].shuxing==0&&oDiv[i-1].biaoji===undefined&&(i-1)%9!=8) {
+                        oDiv[i-1].biaoji = 1;
+                        arr.push(i-1);
+                        findleft(i-1,arr);
+                        findtop(i-1,arr);
+                        finddown(i-1,arr);
+                    }
+                }
+                function findright (i,arr) {
+                    if (oDiv[i+1]!==undefined&&oDiv[i+1].shuxing==0&&oDiv[i+1].biaoji===undefined&&(i+1)%9!=0) {
+                        oDiv[i+1].biaoji = 1;
+                        arr.push(i+1);
+                        findright(i+1,arr);
+                        findtop(i+1,arr);
+                        finddown(i+1,arr);
+                    }
+                }
+                function findtop (i,arr) {
+                    if (oDiv[i-9]!==undefined&&oDiv[i-9].shuxing==0&&oDiv[i-9].biaoji===undefined) {
+                        oDiv[i-9].biaoji = 1;
+                        arr.push(i-9);
+                        findleft(i-9,arr);
+                        findright(i-9,arr)
+                        findtop(i-9,arr);
+                    }
+                }
+                function finddown (i,arr) {
+                    if (oDiv[i+9]!==undefined&&oDiv[i+9].shuxing==0&&oDiv[i+9].biaoji===undefined) {
+                        oDiv[i+9].biaoji = 1;
+                        arr.push(i+9);
+                        findleft(i+9,arr);
+                        findright(i+9,arr);
+                        finddown(i+9,arr);
+                    }
+                }
+                function bianse (i) {
+                    oDiv[i].style.backgroundColor = '#eee';
+                    if (i%9==0){
+                        oDiv[i-9]!==undefined?(oDiv[i-9].style.backgroundColor = '#eee')&&bianzi(i-9):0;
+                        oDiv[i-8]!==undefined?(oDiv[i-8].style.backgroundColor = '#eee')&&bianzi(i-8):0;
+                        oDiv[i+9]!==undefined?(oDiv[i+9].style.backgroundColor = '#eee')&&bianzi(i+9):0;
+                        oDiv[i+10]!==undefined?(oDiv[i+10].style.backgroundColor = '#eee')&&bianzi(i+10):0;
+                        oDiv[i+1]!==undefined?(oDiv[i+1].style.backgroundColor = '#eee')&&bianzi(i+1):0;
+                    }else if (i%9==8){
+                        oDiv[i-10]!==undefined?(oDiv[i-10].style.backgroundColor = '#eee')&&bianzi(i-10):0;
+                        oDiv[i-1]!==undefined?(oDiv[i-1].style.backgroundColor = '#eee')&&bianzi(i-1):0;
+                        oDiv[i+9]!==undefined?(oDiv[i+9].style.backgroundColor = '#eee')&&bianzi(i+9):0;
+                        oDiv[i+8]!==undefined?(oDiv[i+8].style.backgroundColor = '#eee')&&bianzi(i+8):0;
+                        oDiv[i-9]!==undefined?(oDiv[i-9].style.backgroundColor = '#eee')&&bianzi(i-9):0;
+                    }else {
+                        oDiv[i-1]!==undefined?(oDiv[i-1].style.backgroundColor = '#eee')&&bianzi(i-1):0;
+                        oDiv[i+1]!==undefined?(oDiv[i+1].style.backgroundColor = '#eee')&&bianzi(i+1):0;
+                        oDiv[i-10]!==undefined&&oDiv[i-10].shuxing!==0?(oDiv[i-10].style.backgroundColor = '#eee')&&bianzi(i-10):0;
+                        oDiv[i+10]!==undefined&&oDiv[i+10].shuxing!==0?(oDiv[i+10].style.backgroundColor = '#eee')&&bianzi(i+10):0;
+                        oDiv[i-9]!==undefined?(oDiv[i-9].style.backgroundColor = '#eee')&&bianzi(i-9):0;
+                        oDiv[i-8]!==undefined&&oDiv[i-8].shuxing!==0?(oDiv[i-8].style.backgroundColor = '#eee')&&bianzi(i-8):0;
+                        oDiv[i+9]!==undefined?(oDiv[i+9].style.backgroundColor = '#eee')&&bianzi(i+9):0;
+                        oDiv[i+8]!==undefined&&oDiv[i+8].shuxing!==0?(oDiv[i+8].style.backgroundColor = '#eee')&&bianzi(i+8):0;
+                    }
+                }
+                function bianzi (i) {
+                    oDiv[i].innerText = oDiv[i].shuxing; 
+                    if(oDiv[i].qiziFlag==1){
+                        oDiv[i].innerText = ''; 
+                    }else{
+                        oDiv[i].oncontextmenu = null;
+                    }
+                    if(oDiv[i].shuxing==0){
+                        oDiv[i].innerText = ''; 
+                    }
+                }
+                timer = setInterval(function() {
+                    timeSpan.innerText = timeStr;
+                    timeStr++;
+                },1000)
+            }else {
+                alert('请刷新页面重新开始');
+            }
+            oLi[0].onclick = null;
+            oLi[1].onclick = null;
+            oLi[2].onclick = null;
+            
+        }
+        content.oncontextmenu = function(e){
+               e.preventDefault();
+        }
+        
+    </script>
+</body>
+</html>
